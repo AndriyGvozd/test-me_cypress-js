@@ -1,0 +1,6 @@
+{
+  "orbita": { "id": "p01", "name": "Бездротові навушники «Орбіта»", "category": "Audio", "price": 240000, "stock": 8 },
+  "khvylia": { "id": "p02", "name": "Портативна колонка «Хвиля»", "category": "Audio", "price": 150000, "stock": 12 },
+  "lamp": { "id": "p04", "name": "Настільна лампа «Дуга»", "category": "Workspace", "price": 99900, "stock": 10 },
+  "outOfStock": { "id": "p06", "name": "Міський рюкзак «Мандрівник»", "category": "Lifestyle", "price": 210000, "stock": 0 }
+}

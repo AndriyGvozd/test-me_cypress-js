@@ -1,0 +1,22 @@
+{
+  "name": "test-me-cypress",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UI and API automated tests for https://test-me.vzl.one (Cypress + JS)",
+  "scripts": {
+    "cy:open": "cypress open",
+    "test": "cypress run",
+    "test:parallel": "node scripts/run-parallel.mjs",
+    "test:api": "cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "test:ui": "cypress run --spec 'cypress/e2e/ui/**/*.cy.js'",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "cypress": "^16.2.0",
+    "eslint": "^10.13.0",
+    "eslint-plugin-cypress": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
