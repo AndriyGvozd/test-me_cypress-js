@@ -9,4 +9,6 @@ export const ROUTES = Object.freeze({
   favorites: { method: 'PUT', pathname: '/api/favorites' },
   newWorkspace: { method: 'POST', pathname: '/api/workspaces' },
   review: { method: 'POST', pathname: '/api/products/*/review' },
+  // Added after the full spec review: every intercept now goes through this file.
+  cancelOrder: { method: 'POST', pathname: '/api/orders/*/cancel' },
 });

@@ -47,4 +47,16 @@ describe('UI: cart & delivery', () => {
     CartDialog.coupon().should('have.value', RULES.coupon.code);
     CartDialog.totals().its('discount').should('eq', 24000);
   });
+
+  // --- Added after the full spec review: max 10 per line ----------------------------------
+  // TC-UI-5 hits the stock limit (p01 stock 8) before 10, so the "максимум 10" rule needs a
+  // product whose stock is above 10: p05 has stock 20.
+  it('TC-UI-17 quantity is capped at 10 even when stock is higher', () => {
+    cy.visitShop({ cart: [line('p05', 9)] });
+    Header.openCart();
+
+    CartDialog.increase('p05').click();
+    CartDialog.quantity('p05').should('have.text', '10');
+    CartDialog.increase('p05').should('be.disabled');
+  });
 });

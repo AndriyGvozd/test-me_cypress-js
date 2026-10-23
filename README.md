@@ -8,6 +8,8 @@ ID кейса (`TC-API-N`, `TC-UI-N`) стоїть на початку назв�
 - [Тест-план](docs/TEST_PLAN.md) — обсяг тестування й пріоритети, ризики, підхід, **критерії завершення**, аналіз нестабільних тестів, а також що свідомо не покрито і чому.
 - [Тест-кейси](docs/TEST_CASES.md) — трасування «кейс → автотест»; повні кейси з кроками, даними й результатами — у Google Sheets (посилання вище) та `docs/Test_Cases_*.xlsx`.
 - [Дефекти](docs/BUGS.md) — знайдені баги з кроками, очікуваним і фактичним результатом та скриншотами.
+<!-- added: accessibility (star task) -->
+- 🆕 **Завдання з зірочкою — доступність**: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — що перевіряється (WCAG 2.1 AA, підписи полів, клавіатура, діалоги), результат і дефект BUG-7; кейси TC-UI-13…16 — у [docs/Test_Cases_Accessibility.xlsx](docs/Test_Cases_Accessibility.xlsx).
 
 ## Запуск
 Потрібен Node.js 22+ (вимога Cypress 16).
@@ -17,23 +19,29 @@ npm run cy:open        # інтерактивно
 npm test               # усі тести headless, послідовно
 npm run test:parallel  # усі тести в 3 паралельних workers
 npm run test:api       # лише API
-npm run test:ui        # лише UI
+npm run test:ui        # лише UI (разом із тестами доступності)
+npx cypress run --spec cypress/e2e/ui/accessibility.cy.js   # 🆕 лише доступність
 ```
 
 ## Результат
 84 тести: 76 passed, 8 failed. Усі падіння — навмисні дефекти застосунку, описані в [docs/BUGS.md](docs/BUGS.md) зі скриншотами в [docs/evidence](docs/evidence).
 Тести перевіряють **вимоги ТЗ**, а не поточну поведінку, тому червоні тести на цих дефектах — очікуваний результат.
 
+<!-- added: accessibility (star task) -->
+🆕 **Завдання з зірочкою — доступність**: ще 10 тестів, 9 passed, 1 failed (BUG-7). Разом із ними та 🆕 TC-UI-17 (межа 10 у кошику) повний прогін — 95 тестів: 86 passed, 9 failed.
+
 ## Структура
 ```
 cypress/
   e2e/api/            workspace, favorites, quote, orders, isolation, reviews, products
-  e2e/ui/             checkout, cart, orders, environment, catalog, favorites, reviews
+  e2e/ui/             checkout, cart, orders, environment, catalog, favorites, reviews,
+                      accessibility (🆕 зірочка)
   fixtures/           дані товарів, на які спираються кейси
   support/
     api/client.js     обгортки над API (заголовок X-Workspace-Token)
     api/routes.js     матчери для cy.intercept
     commands.js       cy.createWorkspace, cy.visitShop, cy.apiCreateOrder, cy.appState, parseWith
+    a11y.js           🆕 cy.axeViolations, cy.checkA11y (axe-core, WCAG 2.1 AA)
     pages/            Page Objects: Header, CatalogPage, CartDialog, OrdersPage, ProductDialog
     utils/            еталонний розрахунок quote, гроші, тестові дані
     constants.js      бізнес-правила з ТЗ і HTTP-коди

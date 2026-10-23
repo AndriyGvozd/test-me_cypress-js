@@ -45,3 +45,13 @@
 | TC-API-20 | Старий token працює після створення нового workspace | Medium | `GET /orders` | `api/workspace.cy.js` |
 
 Поза автотестами: `GET /api/health` перевіряється окремим тестом без ID кейса (доступність стенда). Що свідомо не покрито — див. [TEST_PLAN.md](TEST_PLAN.md#3-поза-обсягом).
+
+<!-- added: accessibility (star task) + spec review -->
+## 🆕 Додано пізніше
+| ID | Назва | Пріоритет | Автотест | Звідки |
+|---|---|---|---|---|
+| TC-UI-13 | Немає критичних і серйозних порушень WCAG 2.1 AA (axe-core) | High | `cypress/e2e/ui/accessibility.cy.js` | Завдання з зірочкою — доступність, кейси в [Test_Cases_Accessibility.xlsx](Test_Cases_Accessibility.xlsx) |
+| TC-UI-14 | Поля форм мають підписи, кнопки-іконки мають доступні назви | High | `cypress/e2e/ui/accessibility.cy.js` | те саме |
+| TC-UI-15 | Оформлення замовлення лише з клавіатури | High | `cypress/e2e/ui/accessibility.cy.js` | те саме |
+| TC-UI-16 | Діалоги закриваються Esc і повертають фокус | Medium | `cypress/e2e/ui/accessibility.cy.js` | те саме |
+| TC-UI-17 | Кількість обмежена максимумом 10, навіть якщо stock більший | High | `cypress/e2e/ui/cart.cy.js` | Повторна звірка з ТЗ: межа 10 в UI не була перевірена, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |

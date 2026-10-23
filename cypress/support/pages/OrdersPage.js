@@ -13,7 +13,7 @@ export const OrdersPage = {
     cy.wait('@orders');
   },
   cancel(id) {
-    cy.intercept('POST', `**/api/orders/${id}/cancel`).as('cancel');
+    cy.intercept({ ...ROUTES.cancelOrder, pathname: `/api/orders/${id}/cancel` }).as('cancel');
     cy.get(`[data-cancel="${id}"]`).click();
     cy.wait('@cancel');
   },
