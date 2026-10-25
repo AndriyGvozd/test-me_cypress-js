@@ -9,9 +9,9 @@ ID кейса (`TC-API-N`, `TC-UI-N`) стоїть на початку назв�
 - [Тест-кейси](docs/TEST_CASES.md) — трасування «кейс → автотест»; повні кейси з кроками, даними й результатами — у Google Sheets (посилання вище) та `docs/Test_Cases_*.xlsx`.
 - [Дефекти](docs/BUGS.md) — знайдені баги з кроками, очікуваним і фактичним результатом та скриншотами.
 <!-- added: accessibility (star task) -->
-- 🆕 **Завдання з зірочкою — доступність**: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — що перевіряється (WCAG 2.1 AA, підписи полів, клавіатура, діалоги), результат і дефект BUG-7; кейси TC-UI-13…16 — у [docs/Test_Cases_Accessibility.xlsx](docs/Test_Cases_Accessibility.xlsx).
+- 🆕 **Завдання з зірочкою — доступність**: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — що перевіряється (WCAG 2.1 AA, підписи полів, клавіатура, діалоги), результат і дефект BUG-7; кейси TC-UI-13…16 — у [docs/Test_Cases_UI.xlsx](docs/Test_Cases_UI.xlsx).
 <!-- added: network errors (star task) -->
-- 🆕 **Завдання з зірочкою — мережеві помилки**: [docs/NETWORK_ERRORS.md](docs/NETWORK_ERRORS.md) — обрив мережі й помилки сервера (каталог, оформлення, розрахунок, обране), стани завантаження й порожніх даних; кейси TC-UI-18…22 — у [docs/Test_Cases_Network.xlsx](docs/Test_Cases_Network.xlsx).
+- 🆕 **Завдання з зірочкою — мережеві помилки**: [docs/NETWORK_ERRORS.md](docs/NETWORK_ERRORS.md) — обрив мережі й помилки сервера (каталог, оформлення, розрахунок, обране), стани завантаження й порожніх даних; кейси TC-UI-18…22 — у [docs/Test_Cases_UI.xlsx](docs/Test_Cases_UI.xlsx).
 
 ## Запуск
 Потрібен Node.js 22+ (вимога Cypress 16).

@@ -50,14 +50,14 @@
 ## 🆕 Додано пізніше
 | ID | Назва | Пріоритет | Автотест | Звідки |
 |---|---|---|---|---|
-| TC-UI-13 | Немає критичних і серйозних порушень WCAG 2.1 AA (axe-core) | High | `cypress/e2e/ui/accessibility.cy.js` | Завдання з зірочкою — доступність, кейси в [Test_Cases_Accessibility.xlsx](Test_Cases_Accessibility.xlsx) |
+| TC-UI-13 | Немає критичних і серйозних порушень WCAG 2.1 AA (axe-core) | High | `cypress/e2e/ui/accessibility.cy.js` | Завдання з зірочкою — доступність, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
 | TC-UI-14 | Поля форм мають підписи, кнопки-іконки мають доступні назви | High | `cypress/e2e/ui/accessibility.cy.js` | те саме |
 | TC-UI-15 | Оформлення замовлення лише з клавіатури | High | `cypress/e2e/ui/accessibility.cy.js` | те саме |
 | TC-UI-16 | Діалоги закриваються Esc і повертають фокус | Medium | `cypress/e2e/ui/accessibility.cy.js` | те саме |
 | TC-UI-17 | Кількість обмежена максимумом 10, навіть якщо stock більший | High | `cypress/e2e/ui/cart.cy.js` | Повторна звірка з ТЗ: межа 10 в UI не була перевірена, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
-| TC-UI-18 | Каталог показує стани завантаження й помилки та відновлюється | High | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейси в [Test_Cases_Network.xlsx](Test_Cases_Network.xlsx) |
-| TC-UI-19 | Оформлення замовлення переживає збій мережі | Critical | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейси в [Test_Cases_Network.xlsx](Test_Cases_Network.xlsx) |
-| TC-UI-20 | Суми не показуються, а оформлення заблоковане, поки розрахунок падає | High | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейси в [Test_Cases_Network.xlsx](Test_Cases_Network.xlsx) |
-| TC-UI-21 | Невдале збереження обраного не показується як збережене | Medium | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейси в [Test_Cases_Network.xlsx](Test_Cases_Network.xlsx) |
-| TC-UI-22 | Стани порожніх даних | Low | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейси в [Test_Cases_Network.xlsx](Test_Cases_Network.xlsx) |
+| TC-UI-18 | Каталог показує стани завантаження й помилки та відновлюється | High | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
+| TC-UI-19 | Оформлення замовлення переживає збій мережі | Critical | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
+| TC-UI-20 | Суми не показуються, а оформлення заблоковане, поки розрахунок падає | High | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
+| TC-UI-21 | Невдале збереження обраного не показується як збережене | Medium | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
+| TC-UI-22 | Стани порожніх даних | Low | `cypress/e2e/ui/network-errors.cy.js` | Завдання з зірочкою — мережеві помилки, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |
 | TC-UI-23 | Повторне додавання того самого товару не створює другу позицію (p07) | Medium | `cypress/e2e/ui/cart.cy.js` | Дефект BUG-8, кейс у [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) |

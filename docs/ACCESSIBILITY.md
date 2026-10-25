@@ -1,12 +1,12 @@
 # Доступність (завдання з зірочкою)
 
-Окремий блок поверх основної частини. Наявні тести, тест-кейси й документи не змінювались: усе нижче — нові файли.
+Окремий блок поверх основної частини. Автотести й цей опис — нові файли; кейси TC-UI-13…16 додано в загальний [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx) з позначкою 🆕 у колонці Comment.
 
 | Що | Файл |
 |---|---|
 | Автотести | [cypress/e2e/ui/accessibility.cy.js](../cypress/e2e/ui/accessibility.cy.js) |
 | Команди axe-core | [cypress/support/a11y.js](../cypress/support/a11y.js) |
-| Тест-кейси (той самий формат, що й основні) | [Test_Cases_Accessibility.xlsx](Test_Cases_Accessibility.xlsx) |
+| Тест-кейси TC-UI-13…16 | [Test_Cases_UI.xlsx](Test_Cases_UI.xlsx), разом з іншими UI-кейсами |
 | Доказ дефекту | [evidence/BUG-7-pagination-label-in-name.png](evidence/BUG-7-pagination-label-in-name.png) |
 
 ## Що перевіряється
