@@ -10,6 +10,8 @@ ID кейса (`TC-API-N`, `TC-UI-N`) стоїть на початку назв�
 - [Дефекти](docs/BUGS.md) — знайдені баги з кроками, очікуваним і фактичним результатом та скриншотами.
 <!-- added: accessibility (star task) -->
 - 🆕 **Завдання з зірочкою — доступність**: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — що перевіряється (WCAG 2.1 AA, підписи полів, клавіатура, діалоги), результат і дефект BUG-7; кейси TC-UI-13…16 — у [docs/Test_Cases_Accessibility.xlsx](docs/Test_Cases_Accessibility.xlsx).
+<!-- added: network errors (star task) -->
+- 🆕 **Завдання з зірочкою — мережеві помилки**: [docs/NETWORK_ERRORS.md](docs/NETWORK_ERRORS.md) — обрив мережі й помилки сервера (каталог, оформлення, розрахунок, обране), стани завантаження й порожніх даних; кейси TC-UI-18…22 — у [docs/Test_Cases_Network.xlsx](docs/Test_Cases_Network.xlsx).
 
 ## Запуск
 Потрібен Node.js 22+ (вимога Cypress 16).
@@ -21,6 +23,7 @@ npm run test:parallel  # усі тести в 3 паралельних workers
 npm run test:api       # лише API
 npm run test:ui        # лише UI (разом із тестами доступності)
 npx cypress run --spec cypress/e2e/ui/accessibility.cy.js   # 🆕 лише доступність
+npx cypress run --spec cypress/e2e/ui/network-errors.cy.js  # 🆕 лише мережеві помилки
 ```
 
 ## Результат
@@ -30,18 +33,25 @@ npx cypress run --spec cypress/e2e/ui/accessibility.cy.js   # 🆕 лише до
 <!-- added: accessibility (star task) -->
 🆕 **Завдання з зірочкою — доступність**: ще 10 тестів, 9 passed, 1 failed (BUG-7). Разом із ними та 🆕 TC-UI-17 (межа 10 у кошику) повний прогін — 95 тестів: 86 passed, 9 failed.
 
+<!-- added: network errors (star task) -->
+🆕 **Завдання з зірочкою — мережеві помилки**: ще 8 тестів, усі passed (нових дефектів немає). Повний прогін тепер — 103 тести: 94 passed, 9 failed.
+
+<!-- added: BUG-8 -->
+🆕 Додано TC-UI-23 (дефект BUG-8: дубль позиції p07 у кошику). Повний прогін — **104 тести: 94 passed, 10 failed → 8 дефектів**.
+
 ## Структура
 ```
 cypress/
   e2e/api/            workspace, favorites, quote, orders, isolation, reviews, products
   e2e/ui/             checkout, cart, orders, environment, catalog, favorites, reviews,
-                      accessibility (🆕 зірочка)
+                      accessibility, network-errors (🆕 зірочка)
   fixtures/           дані товарів, на які спираються кейси
   support/
     api/client.js     обгортки над API (заголовок X-Workspace-Token)
     api/routes.js     матчери для cy.intercept
     commands.js       cy.createWorkspace, cy.visitShop, cy.apiCreateOrder, cy.appState, parseWith
     a11y.js           🆕 cy.axeViolations, cy.checkA11y (axe-core, WCAG 2.1 AA)
+    network.js        🆕 cy.goOffline, cy.goOnline (офлайн-режим через DevTools Protocol)
     pages/            Page Objects: Header, CatalogPage, CartDialog, OrdersPage, ProductDialog
     utils/            еталонний розрахунок quote, гроші, тестові дані
     constants.js      бізнес-правила з ТЗ і HTTP-коди

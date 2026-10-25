@@ -59,4 +59,18 @@ describe('UI: cart & delivery', () => {
     CartDialog.quantity('p05').should('have.text', '10');
     CartDialog.increase('p05').should('be.disabled');
   });
+
+  // --- Added for BUG-8: one line per product for every product --------------------------------
+  // TC-UI-5 checks the rule on p01 only; p07 «Таймер «Фокус»» (page 2, stock 3) breaks it.
+  // Totals are not asserted here: 2 × 750 = 1500 UAH would also hit BUG-1 (free delivery boundary).
+  it('TC-UI-23 adding the same product twice keeps one line (p07)', () => {
+    cy.visitShop();
+    CatalogPage.nextPage();
+    CatalogPage.addToCart('p07');
+    CatalogPage.addToCart('p07');
+    Header.openCart();
+
+    CartDialog.lines().should('have.length', 1);
+    CartDialog.quantity('p07').should('have.text', '2');
+  });
 });
