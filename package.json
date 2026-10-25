@@ -7,8 +7,11 @@
     "cy:open": "cypress open",
     "test": "cypress run",
     "test:parallel": "node scripts/run-parallel.mjs",
-    "test:api": "cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "test:api": "cypress run --config-file cypress.api.config.js",
     "test:ui": "cypress run --spec 'cypress/e2e/ui/**/*.cy.js'",
+    "test:a11y": "cypress run --spec cypress/e2e/ui/accessibility.cy.js",
+    "test:network": "cypress run --spec cypress/e2e/ui/network-errors.cy.js",
+    "test:mobile": "cypress run --spec cypress/e2e/ui/mobile.cy.js",
     "lint": "eslint ."
   },
   "devDependencies": {

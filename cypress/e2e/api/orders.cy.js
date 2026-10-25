@@ -36,10 +36,10 @@ describe('API: orders', () => {
   describe('TC-API-10 checkout field validation (after trim)', () => {
     [
       { title: 'name of 1 char after trim', field: 'name', value: '  A  ' },
-      { title: 'name of 81 chars', field: 'name', value: text(81) },
+      { title: `name of ${RULES.name.max + 1} chars`, field: 'name', value: text(RULES.name.max + 1) },
       { title: 'email without domain', field: 'email', value: 'test@' },
       { title: 'address of 4 chars after trim', field: 'address', value: '   Київ   ' },
-      { title: 'address of 201 chars', field: 'address', value: text(201) },
+      { title: `address of ${RULES.address.max + 1} chars`, field: 'address', value: text(RULES.address.max + 1) },
     ].forEach(({ title, field, value }) => {
       it(`rejects ${title} with 422`, () => {
         Api.createOrder(token, buildCheckout({ [field]: value }))
@@ -50,7 +50,7 @@ describe('API: orders', () => {
     });
 
     it('accepts boundary values: name of 2 chars, address of 5 chars', () => {
-      Api.createOrder(token, buildCheckout({ name: 'Ол', address: 'Київ1' }))
+      Api.createOrder(token, buildCheckout({ name: text(RULES.name.min), address: text(RULES.address.min) }))
         .its('status')
         .should('eq', HTTP.CREATED);
     });

@@ -3,9 +3,7 @@ import { toKopecks } from '../utils/money';
 
 export const OrdersPage = {
   cards: () => cy.getByTestId('order-card'),
-  emptyList: () => cy.get('#orders-list'),
   cardById: (id) => cy.get(`[data-cancel="${id}"], [data-reorder="${id}"]`).first().parents('[data-testid="order-card"]'),
-  status: (card) => card.find('.status-pill'),
 
   open() {
     cy.intercept(ROUTES.orders).as('orders');

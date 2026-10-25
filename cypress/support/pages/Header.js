@@ -1,8 +1,7 @@
 import { ROUTES } from '../api/routes';
+
 export const Header = {
   cartButton: () => cy.get('#open-cart'),
-  favoritesLink: () => cy.get('a[href="#favorites"]'),
-  ordersLink: () => cy.get('a[href="#orders"]'),
   toast: () => cy.get('#toast'),
 
   openCart() {

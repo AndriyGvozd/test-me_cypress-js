@@ -27,12 +27,12 @@ function parseArgs(argv) {
     return index === -1 ? undefined : own[index + 1];
   };
 
-
   const defaultWorkers = Math.min(3, Math.max(1, availableParallelism() - 1));
-  return {
-    workers: Number(value('--workers') ?? defaultWorkers),
-    passThrough,
-  };
+  const workers = Number(value('--workers') ?? defaultWorkers);
+  if (!Number.isInteger(workers) || workers < 1) {
+    throw new Error(`Invalid --workers "${value('--workers')}", expected a positive integer`);
+  }
+  return { workers, passThrough };
 }
 
 /** Rough cost of a spec: every it(...) plus every data-driven case inside forEach tables. */
@@ -67,7 +67,7 @@ function runWorker(id, specs, passThrough) {
   ];
   const label = `[worker ${id}]`;
   return new Promise((resolve) => {
-    const child = spawn('npx', args, { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, WORKER_ID: String(id) } });
+    const child = spawn('npx', args, { stdio: ['ignore', 'pipe', 'pipe'] });
     const prefix = (stream, out) =>
       stream.on('data', (chunk) =>
         chunk.toString().split('\n').filter(Boolean).forEach((line) => out.write(`${label} ${line}\n`)),

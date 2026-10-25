@@ -1,8 +1,7 @@
 import { ROUTES } from '../api/routes';
+
 export const ProductDialog = {
-  root: () => cy.get('#product-dialog'),
   savedReview: () => cy.get('#saved-review'),
-  reviewError: () => cy.get('#review-error'),
 
   submitReview({ rating, text }) {
     cy.get('#review-rating').select(String(rating));

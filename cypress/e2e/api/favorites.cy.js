@@ -24,18 +24,18 @@ describe('API: favorites', () => {
     });
 
     it('stores no duplicates', () => {
-      Api.putFavorites(token, ['p01', 'p01', 'p02']);
+      Api.putFavorites(token, ['p01', 'p01', 'p02']).its('status').should('eq', HTTP.OK);
       Api.favorites(token).its('body.product_ids').should('have.members', ['p01', 'p02']);
     });
 
     it('removes a product when it is toggled off', () => {
-      Api.putFavorites(token, ['p01', 'p02']);
-      Api.putFavorites(token, ['p02']);
+      Api.putFavorites(token, ['p01', 'p02']).its('status').should('eq', HTTP.OK);
+      Api.putFavorites(token, ['p02']).its('status').should('eq', HTTP.OK);
       Api.favorites(token).its('body.product_ids').should('deep.equal', ['p02']);
     });
 
     it('is not visible to another environment', () => {
-      Api.putFavorites(token, ['p01']);
+      Api.putFavorites(token, ['p01']).its('status').should('eq', HTTP.OK);
       cy.createWorkspace().then((otherToken) => {
         Api.favorites(otherToken).its('body.product_ids').should('be.empty');
       });

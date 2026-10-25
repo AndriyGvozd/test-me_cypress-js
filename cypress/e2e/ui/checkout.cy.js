@@ -1,4 +1,5 @@
 import { Api } from '../../support/api/client';
+import { ROUTES } from '../../support/api/routes';
 import { RULES } from '../../support/constants';
 import { CartDialog, CatalogPage, Header, OrdersPage } from '../../support/pages';
 import { customer, line } from '../../support/utils/data';
@@ -56,8 +57,13 @@ describe('UI: checkout', () => {
     cy.visitShop({ cart: [line('p01')] }).then((token) => {
       Header.openCart();
       CartDialog.fillCustomer(customer);
+      cy.intercept(ROUTES.createOrder).as('placeOrder');
       CartDialog.placeOrderButton().dblclick();
 
+      // Refactor: count the requests the UI sent. Both clicks fire within milliseconds, so a missing
+      // guard would send the 2nd POST before the 1st answer; checking only the API could race it.
+      cy.wait('@placeOrder');
+      cy.get('@placeOrder.all').should('have.length', 1);
       Header.toast().should('contain.text', 'успішно оформлено');
       Api.orders(token).its('body.items').should('have.length', 1);
     });

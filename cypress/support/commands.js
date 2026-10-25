@@ -3,23 +3,25 @@ import { Api } from './api/client';
 import { HTTP } from './constants';
 
 const STORAGE_KEY = () => Cypress.expose('storageKey');
+const MAX_RATE_LIMIT_RETRIES = 5;
 
 /**
  * Creates an isolated workspace and yields its token.
  * Honours the soft rate limit (429 + Retry-After) instead of failing the run on a shared stand.
  * The token is never logged: the command log may end up in public reports.
  */
-Cypress.Commands.add('createWorkspace', () =>
+const createWorkspace = (attempt = 1) =>
   Api.createWorkspace().then((res) => {
-    if (res.status === HTTP.TOO_MANY_REQUESTS) {
+    if (res.status === HTTP.TOO_MANY_REQUESTS && attempt <= MAX_RATE_LIMIT_RETRIES) {
       const retryAfterSec = Number(res.headers['retry-after']) || 5;
       // Waiting for a server-defined period is a deliberate, bounded wait, not a flaky sleep.
-      return cy.wait(retryAfterSec * 1000, { log: false }).then(() => cy.createWorkspace());
+      return cy.wait(retryAfterSec * 1000, { log: false }).then(() => createWorkspace(attempt + 1));
     }
     expect(res.status, 'POST /api/workspaces').to.eq(HTTP.CREATED);
     return res.body.token;
-  }),
-);
+  });
+
+Cypress.Commands.add('createWorkspace', () => createWorkspace());
 
 /**
  * Opens the shop bound to a workspace by seeding localStorage before the app boots.

@@ -12,6 +12,8 @@ ID кейса (`TC-API-N`, `TC-UI-N`) стоїть на початку назв�
 - 🆕 **Завдання з зірочкою — доступність**: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md) — що перевіряється (WCAG 2.1 AA, підписи полів, клавіатура, діалоги), результат і дефект BUG-7; кейси TC-UI-13…16 — у [docs/Test_Cases_UI.xlsx](docs/Test_Cases_UI.xlsx).
 <!-- added: network errors (star task) -->
 - 🆕 **Завдання з зірочкою — мережеві помилки**: [docs/NETWORK_ERRORS.md](docs/NETWORK_ERRORS.md) — обрив мережі й помилки сервера (каталог, оформлення, розрахунок, обране), стани завантаження й порожніх даних; кейси TC-UI-18…22 — у [docs/Test_Cases_UI.xlsx](docs/Test_Cases_UI.xlsx).
+<!-- added: mobile layout (star task) -->
+- 🆕 **Завдання з зірочкою — мобільний режим**: [docs/MOBILE.md](docs/MOBILE.md) — адаптивність від 360px: без горизонтального скролу, шапка й діалоги в межах екрана, оформлення на телефоні; кейси TC-UI-24…27 — у [docs/Test_Cases_UI.xlsx](docs/Test_Cases_UI.xlsx).
 
 ## Запуск
 Потрібен Node.js 22+ (вимога Cypress 16).
@@ -20,11 +22,14 @@ npm install
 npm run cy:open        # інтерактивно
 npm test               # усі тести headless, послідовно
 npm run test:parallel  # усі тести в 3 паралельних workers
-npm run test:api       # лише API
-npm run test:ui        # лише UI (разом із тестами доступності)
-npx cypress run --spec cypress/e2e/ui/accessibility.cy.js   # 🆕 лише доступність
-npx cypress run --spec cypress/e2e/ui/network-errors.cy.js  # 🆕 лише мережеві помилки
+npm run test:api       # лише API (🆕 окремий конфіг: без відео й повторів)
+npm run test:ui        # лише UI (разом із блоками «зірочки»)
+npm run test:a11y      # 🆕 лише доступність
+npm run test:network   # 🆕 лише мережеві помилки
+npm run test:mobile    # 🆕 лише мобільний режим
 ```
+<!-- added: code cleanup -->
+🆕 **Конфіги.** Основний `cypress.config.js` запускає все. `cypress.api.config.js` розширює його лише для API: вимикає відео (API-тести нічого не рендерять) і повтори (відповіді API детерміновані, повтор лише сховав би справжню помилку). Окремий конфіг для UI не потрібен: UI і є базовим.
 
 ## Результат
 84 тести: 76 passed, 8 failed. Усі падіння — навмисні дефекти застосунку, описані в [docs/BUGS.md](docs/BUGS.md) зі скриншотами в [docs/evidence](docs/evidence).
@@ -39,23 +44,30 @@ npx cypress run --spec cypress/e2e/ui/network-errors.cy.js  # 🆕 лише ме
 <!-- added: BUG-8 -->
 🆕 Додано TC-UI-23 (дефект BUG-8: дубль позиції p07 у кошику). Повний прогін — **104 тести: 94 passed, 10 failed → 8 дефектів**.
 
+<!-- added: mobile layout (star task) -->
+🆕 **Завдання з зірочкою — мобільний режим**: ще 5 тестів, усі passed (дефектів адаптивності немає). Повний прогін — **109 тестів: 99 passed, 10 failed → 8 дефектів**.
+
 ## Структура
 ```
 cypress/
   e2e/api/            workspace, favorites, quote, orders, isolation, reviews, products
   e2e/ui/             checkout, cart, orders, environment, catalog, favorites, reviews,
-                      accessibility, network-errors (🆕 зірочка)
+                      accessibility, network-errors, mobile (🆕 зірочка)
   fixtures/           дані товарів, на які спираються кейси
   support/
     api/client.js     обгортки над API (заголовок X-Workspace-Token)
     api/routes.js     матчери для cy.intercept
     commands.js       cy.createWorkspace, cy.visitShop, cy.apiCreateOrder, cy.appState, parseWith
-    a11y.js           🆕 cy.axeViolations, cy.checkA11y (axe-core, WCAG 2.1 AA)
-    network.js        🆕 cy.goOffline, cy.goOnline (офлайн-режим через DevTools Protocol)
+    a11y.js           🆕 cy.axeViolations, cy.checkA11y, press, expectLabelled (axe-core, WCAG 2.1 AA)
+    network.js        🆕 cy.goOffline, cy.goOnline, failNext (офлайн-режим через DevTools Protocol, 500)
+    layout.js         🆕 VIEWPORTS, expectNoHorizontalScroll, expectWithinViewport
+    index.d.ts        🆕 типи власних команд для підказок редактора
     pages/            Page Objects: Header, CatalogPage, CartDialog, OrdersPage, ProductDialog
     utils/            еталонний розрахунок quote, гроші, тестові дані
     constants.js      бізнес-правила з ТЗ і HTTP-коди
 scripts/run-parallel.mjs  паралельний запуск у кількох workers
+cypress.api.config.js     🆕 конфіг лише для API (без відео й повторів)
+jsconfig.json             🆕 підключає типи Cypress для підказок редактора
 docs/                 тест-план, тест-кейси, дефекти, evidence
 ```
 

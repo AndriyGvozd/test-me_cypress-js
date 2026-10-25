@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "types": ["cypress"],
+    "resolveJsonModule": true
+  },
+  "include": ["cypress/**/*.js", "cypress/**/*.d.ts", "cypress.config.js", "cypress.api.config.js"]
+}

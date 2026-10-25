@@ -87,8 +87,8 @@ describe('API: quote (cart calculation)', () => {
 
   describe('TC-API-7 quantity and stock limits', () => {
     [
-      { title: 'quantity 0', quantity: 0, status: HTTP.UNPROCESSABLE },
-      { title: 'quantity 11', quantity: 11, status: HTTP.UNPROCESSABLE },
+      { title: 'quantity 0', quantity: RULES.qty.min - 1, status: HTTP.UNPROCESSABLE },
+      { title: 'quantity 11', quantity: RULES.qty.max + 1, status: HTTP.UNPROCESSABLE },
       { title: 'quantity above stock (9 of 8)', quantity: 9, status: HTTP.CONFLICT },
       { title: 'quantity equal to stock (8 of 8)', quantity: 8, status: HTTP.OK },
     ].forEach(({ title, quantity, status }) => {

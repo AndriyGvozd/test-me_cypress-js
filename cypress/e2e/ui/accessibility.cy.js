@@ -3,16 +3,11 @@
 // Spec requirements covered: "клавіатурна навігація, підписи полів" + WCAG 2.1 AA audit.
 // Added on top of the critical UI suite; no existing spec was changed.
 // ============================================================================
-import 'cypress-real-events';
-import '../../support/a11y';
+import { expectLabelled, press } from '../../support/a11y';
 import { Api } from '../../support/api/client';
 import { ROUTES } from '../../support/api/routes';
 import { CartDialog, CatalogPage, Header } from '../../support/pages';
 import { customer, line } from '../../support/utils/data';
-
-// Keys are pressed through Chrome DevTools Protocol (cypress-real-events): unlike cy.press(),
-// a real Enter activates the focused button and a real Esc closes a native <dialog>.
-const press = (key) => cy.realPress(key);
 
 /** The element that currently has keyboard focus. */
 const focused = () => cy.focused();
@@ -43,15 +38,6 @@ describe('UI: accessibility', () => {
 
   describe('TC-UI-14 form fields have labels and icon buttons have accessible names', () => {
     beforeEach(() => cy.visitShop({ cart: [line('p01')] }));
-
-    // element.labels covers both <label for="…"> and a <label> wrapping the field.
-    const expectLabelled = (selector) =>
-      cy.get(selector).should(($el) => {
-        const [field] = $el;
-        const labelText = [...field.labels].map((l) => l.innerText.trim()).join(' ');
-        const name = labelText || field.getAttribute('aria-label') || field.getAttribute('aria-labelledby');
-        expect(Boolean(name), `${selector} has a label`).to.be.true;
-      });
 
     it('every checkout and filter field has a label', () => {
       ['#search', '#sort', '#min-price', '#max-price'].forEach(expectLabelled);
@@ -86,7 +72,7 @@ describe('UI: accessibility', () => {
       press('Enter');
       Header.cartButton().should('contain.text', '1');
 
-      Header.cartButton().focus();
+      Header.cartButton().should('be.enabled').focus();
       press('Enter');
       CartDialog.root().should('have.attr', 'open');
 
@@ -101,7 +87,9 @@ describe('UI: accessibility', () => {
       focused().should('have.id', 'payment');
 
       cy.intercept(ROUTES.createOrder).as('placeOrder');
-      CartDialog.placeOrderButton().focus();
+      // Refactor (flaky fix): the app disables the button while it recalculates the quote, and
+      // unlike click(), focus() does not wait for an element to become enabled.
+      CartDialog.placeOrderButton().should('be.enabled').focus();
       press('Enter');
       cy.wait('@placeOrder').its('response.statusCode').should('eq', 201);
       Api.orders(token).its('body.items').should('have.length', 1);
@@ -112,7 +100,7 @@ describe('UI: accessibility', () => {
     beforeEach(() => cy.visitShop({ cart: [line('p01')] }));
 
     it('cart dialog', () => {
-      Header.cartButton().focus();
+      Header.cartButton().should('be.enabled').focus();
       press('Enter');
       CartDialog.root().should('have.attr', 'open');
       focused().should(($el) => expect($el.closest('#bag-dialog'), 'focus is inside the dialog').to.have.length(1));

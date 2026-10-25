@@ -4,35 +4,13 @@
 // simulated in the browser: connection lost = offline mode via DevTools Protocol, 500 = cy.intercept.
 // Added on top of the critical UI suite; no existing spec was changed.
 // ============================================================================
-import '../../support/network';
 import { Api } from '../../support/api/client';
 import { ROUTES } from '../../support/api/routes';
 import { CartDialog, CatalogPage, Header, OrdersPage } from '../../support/pages';
+import { FAILURES, failNext } from '../../support/network';
 import { customer, line } from '../../support/utils/data';
-
-const SERVER_ERROR = { statusCode: 500, body: { detail: 'Internal Server Error' } };
-
-/**
- * Makes the next request of `route` fail, runs `action`, then restores the network.
- * - 'offline': the browser loses the connection (DevTools Protocol) for the duration of the action;
- * - 'server':  the next matching request gets 500 (`times: 1`), so the same test can check recovery.
- */
-const failNext = (failure, route, action) => {
-  if (failure === 'offline') {
-    cy.goOffline();
-    action();
-    cy.goOnline();
-  } else {
-    cy.intercept({ ...route, times: 1 }, SERVER_ERROR).as('failed');
-    action();
-    cy.wait('@failed');
-  }
-};
-
-const FAILURES = [
-  { title: 'connection is lost', failure: 'offline', message: 'Немає зв’язку' },
-  { title: 'server answers 500', failure: 'server', message: '500' },
-];
+import { expectedQuote } from '../../support/utils/pricing';
+import products from '../../fixtures/products.json';
 
 describe('UI: network errors and states', () => {
   // Safety net: a test that fails while offline must not leave the browser without network.
@@ -102,7 +80,8 @@ describe('UI: network errors and states', () => {
 
     // Any change recalculates the quote; with the network back totals and checkout return.
     CartDialog.selectDelivery('express');
-    CartDialog.totals().its('total').should('eq', 255000);
+    const { total } = expectedQuote([{ price: products.orbita.price, quantity: 1 }], { delivery: 'express' });
+    CartDialog.totals().its('total').should('eq', total);
     CartDialog.placeOrderButton().should('be.enabled');
   });
 

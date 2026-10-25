@@ -37,3 +37,6 @@
 🆕 З тестами мережевих помилок: 103 тести, 94 passed, 9 failed. Мережеві тести нових дефектів не знайшли ([NETWORK_ERRORS.md](NETWORK_ERRORS.md)).
 
 🆕 З TC-UI-23 (BUG-8): 104 тести, 94 passed, 10 failed → 8 дефектів.
+
+<!-- added: mobile layout (star task) -->
+🆕 З тестами мобільного режиму: 109 тестів, 99 passed, 10 failed → 8 дефектів. Дефектів адаптивності не знайдено ([MOBILE.md](MOBILE.md)).

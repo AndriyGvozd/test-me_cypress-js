@@ -4,6 +4,8 @@
 // bundle is read from node_modules and added to the page as a classic <script>, exactly as a site
 // would load it. Bundling axe through webpack breaks its UMD wrapper ("exports is not defined").
 
+import 'cypress-real-events';
+
 const AXE_BUNDLE = 'node_modules/axe-core/axe.min.js';
 const WCAG_AA = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 const BLOCKING_IMPACTS = ['critical', 'serious'];
@@ -45,3 +47,19 @@ Cypress.Commands.add('checkA11y', (context) =>
     expect(blocking, `critical/serious a11y violations: ${summary || 'none'}`).to.be.empty;
   }),
 );
+
+/**
+ * Presses a key through Chrome DevTools Protocol (cypress-real-events). Unlike cy.press(),
+ * a real Enter activates the focused button and a real Esc closes a native <dialog>.
+ * @param {string} key e.g. 'Enter', 'Tab', 'Escape'
+ */
+export const press = (key) => cy.realPress(key);
+
+/** The field has an accessible label: <label for>, a wrapping <label>, aria-label or aria-labelledby. */
+export const expectLabelled = (selector) =>
+  cy.get(selector).should(($el) => {
+    const [field] = $el;
+    const labelText = [...field.labels].map((l) => l.innerText.trim()).join(' ');
+    const name = labelText || field.getAttribute('aria-label') || field.getAttribute('aria-labelledby');
+    expect(Boolean(name), `${selector} has a label`).to.be.true;
+  });

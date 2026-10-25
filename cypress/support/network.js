@@ -23,3 +23,27 @@ Cypress.Commands.add('goOnline', () => {
   cy.log('**network: online**');
   return cy.wrap(setOffline(false), { log: false });
 });
+
+export const SERVER_ERROR = Object.freeze({ statusCode: 500, body: { detail: 'Internal Server Error' } });
+
+/**
+ * Makes the next request of `route` fail, runs `action`, then restores the network.
+ * - 'offline': the browser loses the connection (DevTools Protocol) for the duration of the action;
+ * - 'server':  the next matching request gets 500 (`times: 1`), so the same test can check recovery.
+ */
+export const failNext = (failure, route, action) => {
+  if (failure === 'offline') {
+    cy.goOffline();
+    action();
+    cy.goOnline();
+  } else {
+    cy.intercept({ ...route, times: 1 }, SERVER_ERROR).as('failed');
+    action();
+    cy.wait('@failed');
+  }
+};
+
+export const FAILURES = Object.freeze([
+  { title: 'connection is lost', failure: 'offline', message: 'Немає зв’язку' },
+  { title: 'server answers 500', failure: 'server', message: '500' },
+]);
